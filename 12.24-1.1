@@ -1,0 +1,161 @@
+做了航电关于栈与队列的一部分题，以及学了一些排序方法比如快排、插排等等
+HDU的1701如下：这是关于栈和队列的，学会这个天梯赛的模拟题我算是可以解决做不出来的B题了
+#include<stdio.h>
+#include<iostream>
+#include<string.h>
+#include<stack>
+#include<queue>
+using namespace std;
+int main(void)
+{
+	stack <int> s;
+	queue <int> q;
+	int n,w;
+	char c[5],d[3];
+	int m;
+	scanf("%d",&m);
+	for(int j=0;j<m;j++)
+	{
+		scanf("%d",&n);
+		cin >> c;
+		for(int i=0;i<n;i++)
+		{
+			if(c[2]=='L')
+			{
+				cin >> d;
+				if(d[0]=='I')
+				{
+					cin >> w;
+					s.push(w);
+				}else
+				{
+					if(s.empty()==1) printf("None\n");
+					else
+					{
+						printf("%d\n",s.top());
+						s.pop();
+					}
+				}
+			}
+			else
+			{
+				cin >> d;
+				if(d[0]=='I') 
+				{
+					cin >> w;
+					q.push(w);
+				}else
+				{
+					if(q.empty()==1) printf("None\n");
+					else 
+					{
+						printf("%d\n",q.front());
+						q.pop();
+					}
+				}
+			}
+		}
+		s=stack<int>();
+		q=queue<int>();
+	}
+}
+快排洛谷p1177如下：其实我觉得sort我打得更快来着······
+#include<iostream>
+#include<cstdlib>
+#include<stdio.h>
+#include<ctime>
+using namespace std;
+void sou_sort(int a[],int low,int high);
+void swap(int *b,int *c);
+void chasort(int *a,int left,int right);
+int main(void)
+{
+	int a[100001],n;
+	scanf("%d",&n);
+	for (int i=0;i<n;i++)
+		scanf("%d",&a[i]);
+	sou_sort(a,0,n-1);
+	for (int i=0;i<n;i++)
+		printf("%d ",a[i]) ;
+}
+void sou_sort(int a[], int left, int right)
+{
+    if (left >= right)
+        return;
+    if (right - left + 1 < 10)
+    {
+        chasort(a, left, right);
+        return;
+    }else
+	{
+	srand(time(NULL));
+    int i = left, j = right,pivot=rand()%(right-left)+left;
+    swap(a[left],a[pivot]);
+    int key=a[left];
+    while (i < j)
+    {
+    	while(i<j&&key<=a[j])
+		{
+			j--;
+		}
+    	while(i<j&&key>=a[i])
+		{
+			i++;
+		}
+			swap(a[i],a[j]);
+    }
+    swap(a[j],a[left]);
+    sou_sort(a,left,j-1);
+    sou_sort(a,j+1,right);
+	}
+}
+void swap(int *b,int *c)
+{
+	int temp;
+	temp=*b;
+	*b=*c;
+	*c=temp;
+}
+void chasort(int a[],int left,int right)
+{
+    for (int i = left + 1; i <= right; i++)
+        for (int j = i; j > 0 && a[j] < a[j-1]; j--)
+            swap(a[j], a[j-1]);
+}
+以及写了一些水题：
+洛谷p6056：
+#include<iostream>
+#include<cmath>
+using namespace std;
+int main(void)
+{
+	int a,j,n,S[101]={0},I[101]={0},R[101]={0};
+	double b=0.0,r=0.0;
+	cin >> S[0] >> I[0] >> n;
+	cin >> b >> r;
+	for(int i=1;i<=n;i++)
+	{
+		a=ceil(b*S[i-1]*I[i-1]);
+		j=ceil(r*I[i-1]);
+		if(a>=S[i-1])
+		{
+            S[i]=0,I[i]=I[i-1]+S[i-1]-j,R[i]=R[i-1]+j;
+        }
+        else{
+		R[i]=R[i-1]+j;
+		I[i]=ceil(I[i-1]+a-j);
+		S[i]=S[i-1]-a;
+		}
+	}
+	cout << S[n] << " " << I[n] << " " << R[n];
+}
+洛谷p1001：
+#include<stdio.h>
+int main()
+{
+	int a;
+	int b;
+    scanf("%d%d", &a, &b);
+	printf("%d", a + b);
+	return 0;
+}
